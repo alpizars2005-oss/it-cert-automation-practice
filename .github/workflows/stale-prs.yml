@@ -1,16 +1,24 @@
-name: 'Close stale PRs'
+name: Close stale PRs
+
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '17 8 * * *'
 
 permissions:
+  contents: read
+  issues: write
   pull-requests: write
 
 jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v4
+      - uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9
         with:
-          stale-pr-message: 'Stale PRs will be automatically closed to keep this repo clean. If there is no activity on this PR in the next 7 days, this PR will be closed.'
+          days-before-pr-stale: 60
+          days-before-pr-close: 14
+          stale-pr-label: stale
+          remove-pr-stale-when-updated: true
+          operations-per-run: 100
+          stale-pr-message: 'This pull request has been inactive for 60 days. It will close after another 14 days without activity; any update removes the stale state.'
